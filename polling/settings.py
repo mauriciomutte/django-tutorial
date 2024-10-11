@@ -29,9 +29,11 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
 ]
 
-LOCAL_APPS= []
+THIRD_PARTY_APPS = []
 
-THIRD_PARTY_APPS= []
+LOCAL_APPS = [
+    'polling.apps.core',
+]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
 
