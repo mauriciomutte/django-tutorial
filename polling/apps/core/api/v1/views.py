@@ -1,4 +1,4 @@
-from polling.apps.core.models import Question, Choice
+from polling.apps.core.models import Question
 from .serializers import QuestionSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
