@@ -1,12 +1,35 @@
-from polling.apps.core.models import Question
-from .serializers import QuestionSerializer
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from polling.apps.core.models import Question
+
+from .serializers import QuestionSerializer
 
 
 # get poll by id
 class PollDetailView(APIView):
+    """
+    Retrieve a poll by its ID.
+
+    Accepts a GET request with a poll ID and returns the poll data.
+
+    Returns:
+        200: Successfully retrieved poll
+            {
+                "id": int,
+                "question_text": str,
+                "pub_date": datetime
+            }
+        404: Poll not found
+            {
+                "detail": "Not found"
+            }
+
+    Example:
+        GET /api/v1/polls/1/
+    """
+
     def get(self, request, pk):
         try:
             question = Question.objects.get(pk=pk)
@@ -17,10 +40,43 @@ class PollDetailView(APIView):
         return Response(serializer.data)
 
 
-# create a poll
 class PollCreateView(APIView):
+    """
+    Create a new poll question.
+
+    Accepts a POST request with a question text and creates a new poll in the system.
+
+    Request Body:
+        {
+            "question_text": str  # The text of the poll question,
+            "pub_date": datetime  # The date and time the poll was published
+        }
+
+    Returns:
+        201: Successfully created poll
+            {
+                "id": int,
+                "question_text": str,
+                "pub_date": datetime
+            }
+        400: Bad Request
+            {
+                "field_name": [
+                    "error message"
+                ]
+            }
+
+    Example:
+        POST /api/v1/polls/
+        {
+            "question_text": "What is your favorite color?",
+            "pub_date": "2024-01-01T00:00:00Z"
+        }
+    """
+
     def post(self, request):
         serializer = QuestionSerializer(data=request.data)
+
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
