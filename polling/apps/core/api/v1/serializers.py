@@ -4,9 +4,14 @@ from polling.apps.core.models import Question
 
 
 class QuestionSerializer(serializers.ModelSerializer):
+    choices = serializers.SerializerMethodField()
+
+    def get_choices(self, obj):
+        return obj.choices.values_list("choice_text", flat=True)
+
     class Meta:
         model = Question
-        fields = ["id", "question_text", "pub_date"]
+        fields = ["id", "question_text", "pub_date", "choices"]
 
 
 class CreatePollSerializer(serializers.Serializer):
