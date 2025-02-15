@@ -22,6 +22,7 @@ from polling.apps.core.api.v1 import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/v1/poll/", views.PollCreateView.as_view(), name="poll-create"),
-    path("api/v1/poll/<int:pk>/", views.PollDetailView.as_view(), name="poll-detail"),
+    path("api/v1/polls/", views.PollCreateView.as_view(), name="poll-create"),
+    path("api/v1/polls/<str:pk>/", views.PollDetailView.as_view(), name="poll-detail"),
+    path("api/v1/polls/<str:id>/vote/", views.PollVoteView.as_view(), name="poll-vote"),
 ]
